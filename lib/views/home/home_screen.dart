@@ -10,47 +10,13 @@ import '../history/history_screen.dart';
 import '../profile/profile_screen.dart';
 import '../search/search_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _selectedNavIndex = 0;
-  int _selectedCategory = 0;
-
-  static const List<({IconData icon, String label})> _categories = [
-    (icon: Icons.flight_takeoff_rounded, label: 'Flight'),
-    (icon: Icons.hotel_rounded, label: 'Hotel'),
-    (icon: Icons.directions_bus_rounded, label: 'Bus'),
-    (icon: Icons.directions_car_filled_rounded, label: 'Car'),
-  ];
-
-  void _openSearch() {
+  void _openSearch(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(builder: (_) => const SearchScreen()),
     );
-  }
-
-  Future<void> _onNavTap(int index) async {
-    if (index == 0) return;
-
-    setState(() => _selectedNavIndex = index);
-
-    final Widget page = switch (index) {
-      1 => const SearchScreen(),
-      2 => const HistoryScreen(),
-      _ => const ProfileScreen(),
-    };
-
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => page),
-    );
-
-    if (!mounted) return;
-    setState(() => _selectedNavIndex = 0);
   }
 
   @override
@@ -117,38 +83,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       children: [
                         Expanded(
-                          child: AppSearchField(onTap: _openSearch),
+                          child: AppSearchField(
+                            onTap: () => _openSearch(context),
+                          ),
                         ),
                         const SizedBox(width: 10),
                         CircleIconButton(
                           icon: Icons.tune_rounded,
                           size: 56,
-                          onTap: _openSearch,
+                          onTap: () => _openSearch(context),
                         ),
                       ],
                     ),
                     const SizedBox(height: 18),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      clipBehavior: Clip.none,
-                      child: Row(
-                        children: List.generate(_categories.length, (index) {
-                          final category = _categories[index];
-                          return Padding(
-                            padding: EdgeInsets.only(
-                              right: index == _categories.length - 1 ? 0 : 10,
-                            ),
-                            child: _CategoryChip(
-                              icon: category.icon,
-                              label: category.label,
-                              selected: index == _selectedCategory,
-                              onTap: () =>
-                                  setState(() => _selectedCategory = index),
-                            ),
-                          );
-                        }),
-                      ),
-                    ),
+                    const _CategorySelector(),
                     const SizedBox(height: 24),
                     const Text(
                       'Popular Destinations',
@@ -178,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           imageUrl: destination.imageUrl,
                           location: destination.location,
                           title: destination.title,
-                          onTap: _openSearch,
+                          onTap: () => _openSearch(context),
                         );
                       },
                     ),
@@ -186,14 +134,88 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            AppBottomNav(
-              currentIndex: _selectedNavIndex,
-              onTap: _onNavTap,
-            ),
+            const _HomeBottomNav(),
           ],
         ),
       ),
     );
+  }
+}
+
+class _CategorySelector extends StatefulWidget {
+  const _CategorySelector();
+
+  @override
+  State<_CategorySelector> createState() => _CategorySelectorState();
+}
+
+class _CategorySelectorState extends State<_CategorySelector> {
+  int _selectedIndex = 0;
+
+  static const List<({IconData icon, String label})> _categories = [
+    (icon: Icons.flight_takeoff_rounded, label: 'Flight'),
+    (icon: Icons.hotel_rounded, label: 'Hotel'),
+    (icon: Icons.directions_bus_rounded, label: 'Bus'),
+    (icon: Icons.directions_car_filled_rounded, label: 'Car'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      clipBehavior: Clip.none,
+      child: Row(
+        children: List.generate(_categories.length, (index) {
+          final category = _categories[index];
+          return Padding(
+            padding: EdgeInsets.only(
+              right: index == _categories.length - 1 ? 0 : 10,
+            ),
+            child: _CategoryChip(
+              icon: category.icon,
+              label: category.label,
+              selected: index == _selectedIndex,
+              onTap: () => setState(() => _selectedIndex = index),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}
+
+class _HomeBottomNav extends StatefulWidget {
+  const _HomeBottomNav();
+
+  @override
+  State<_HomeBottomNav> createState() => _HomeBottomNavState();
+}
+
+class _HomeBottomNavState extends State<_HomeBottomNav> {
+  int _selectedIndex = 0;
+
+  Future<void> _onTap(int index) async {
+    if (index == 0) return;
+
+    setState(() => _selectedIndex = index);
+
+    final Widget page = switch (index) {
+      1 => const SearchScreen(),
+      2 => const HistoryScreen(),
+      _ => const ProfileScreen(),
+    };
+
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => page),
+    );
+
+    if (!mounted) return;
+    setState(() => _selectedIndex = 0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBottomNav(currentIndex: _selectedIndex, onTap: _onTap);
   }
 }
 
