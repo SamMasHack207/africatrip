@@ -1,3 +1,4 @@
+import 'package:africatrip/views/home/widgets/categories_list.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -58,109 +59,64 @@ class HomeScreen extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            Container(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 8,
-                            // spreadRadius: 5,
-                            // offset: const Offset(6, 1),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "search here ...",
-                          prefixIcon: Icon(Icons.search_outlined),
-                          filled: true,
-                          fillColor: Colors.white54,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    width: 40,
-                    height: 40,
+            SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 50,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(22),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 6,
-                          // spreadRadius: 5,
-                          offset: const Offset(6, 1),
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 1,
+                          // spreadRadius: 0,
+                          offset: const Offset(0, 1),
                         ),
                       ],
                     ),
-                    child: Icon(Icons.filter_alt_outlined),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "search here ...",
+                        prefixIcon: Icon(Icons.search_outlined),
+                        // filled: true,
+                        // fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
                   ),
-                ],
-              ),
+                ),
+                SizedBox(width: 10),
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 2,
+                        // spreadRadius: 5,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                  child: Icon(Icons.filter_alt_outlined),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-
-              child: Row(
-                children: [
-                  Container(
-                    width: 80,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      color: Colors.green,
-                    ),
-                    child: Center(child: Text("Flight")),
-                  ),
-
-                  SizedBox(width: 10),
-
-                  Container(
-                    width: 80,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      color: Colors.orange,
-                    ),
-                    child: Center(child: Text("Hotel")),
-                  ),
-
-                  SizedBox(width: 10),
-
-                  Container(
-                    width: 80,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      color: Colors.blue,
-                    ),
-                    child: Center(child: Text("Bus")),
-                  ),
-
-                  SizedBox(width: 10),
-
-                  Container(
-                    width: 80,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      color: Colors.red,
-                    ),
-                    child: Center(child: Text("Car")),
-                  ),
-                ],
-              ),
+            const SizedBox(height: 30),
+            CategoriesList(),
+            const SizedBox(height: 30),
+            Text(
+              "Popular Destinations",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
             ),
           ],
         ),

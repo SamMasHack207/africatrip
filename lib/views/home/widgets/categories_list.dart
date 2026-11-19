@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesList extends StatefulWidget {
@@ -9,45 +8,63 @@ class CategoriesList extends StatefulWidget {
 }
 
 class _CategoriesListState extends State<CategoriesList> {
-  // int _index_selected = 0;
-  static const List<({IconData icon, String label})> _categories = [
-    (icon: Icons.flight_sharp, label: "Flight"),
-    (icon: Icons.hotel, label: "Hotel"),
-    (icon: Icons.directions_bus, label: "Bus"),
-    (icon: Icons.directions_car, label: "Car"),
-  ];
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: List.generate(_categories.length, (index) {
-          final categorie = _categories[index];
-          //final selected = index == _index_selected;
-          // final foreground = selected ? Colors.white : Colors.black87;
-          return Padding(
-            padding: EdgeInsets.only(
-              right: index == _categories.length - 1 ? 0 : 10,
+        spacing: 10,
+        children: [
+          optionBuilder(
+            label: "Flight",
+            icon: Icons.flight_outlined,
+            isActivated: true,
+          ),
+          optionBuilder(
+            label: "Hotel",
+            icon: Icons.apartment_outlined,
+            isActivated: false,
+          ),
+          optionBuilder(
+            label: "Bus",
+            icon: Icons.directions_bus_outlined,
+            isActivated: false,
+          ),
+          optionBuilder(
+            label: "Car",
+            icon: Icons.directions_car_outlined,
+            isActivated: false,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget optionBuilder({
+    required String label,
+    required IconData icon,
+    required bool isActivated,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      height: 45,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        color: isActivated ? Color(0xff6ba83a) : Colors.grey[300],
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: isActivated ? Colors.white : Colors.black),
+          const SizedBox(width: 2),
+          Text(
+            label,
+            style: TextStyle(
+              color: isActivated ? Colors.white : Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
             ),
-            child: Material(
-              borderRadius: BorderRadius.circular(22),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 11,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(categorie.icon),
-                    const SizedBox(width: 6),
-                    Text(categorie.label),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }),
+          ),
+        ],
       ),
     );
   }
