@@ -31,6 +31,9 @@ class DestinationsGrid extends StatelessWidget {
       itemCount: destinationList.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childAspectRatio: 0.72,
       ),
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -50,20 +53,83 @@ class DestinationsGrid extends StatelessWidget {
     required String name,
     required String imageSource,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage(imageSource)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: Stack(
+        fit: StackFit.expand,
         children: [
-          Row(
-            children: [
-              Icon(Icons.location_on_outlined, size: 40),
-              Text(location),
-            ],
+          Image.asset(imageSource, fit: BoxFit.cover),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withValues(alpha: 0.15),
+                  Colors.transparent,
+                  Colors.black.withValues(alpha: 0.75),
+                ],
+                stops: const [0.0, 0.45, 1.0],
+              ),
+            ),
           ),
-          Text(name),
+          Positioned(
+            top: 12,
+            right: 12,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.2),
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+              ),
+              child: const Icon(
+                Icons.arrow_outward,
+                color: Colors.white,
+                size: 18,
+              ),
+            ),
+          ),
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 16,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.location_on_outlined,
+                      color: Colors.white70,
+                      size: 14,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      location,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
