@@ -1,3 +1,4 @@
+import 'package:africatrip/views/home/search_flights_screen.dart';
 import 'package:flutter/material.dart';
 
 class Navbar extends StatefulWidget {
@@ -39,14 +40,14 @@ class _NavbarState extends State<Navbar> {
 
     return GestureDetector(
       onTap: () {
-        if (index == 6) {
+        if (index == 1) {
           // Deuxième bouton : navigation vers SecondScreen
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => const SecondScreen(),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SearchFlightsScreen(),
+            ),
+          );
         } else {
           setState(() {
             _selectedIndex = index;
